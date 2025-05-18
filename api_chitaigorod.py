@@ -16,7 +16,7 @@ class ChitaiGorodAPI:
 
     def search_product(self, phrase: str):
         """
-           Поиск книги по фразе
+           Поиск книги
         """
         params = {
             'phrase': phrase

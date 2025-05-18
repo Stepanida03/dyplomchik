@@ -103,3 +103,32 @@ class ChitaiGorodUI:
            Закрыть браузер
         """
         self.driver.quit()
+
+    def search_title(self):
+        """
+        Результаты поиска
+        """
+        txt = self.driver.find_element(
+            By.CSS_SELECTOR, "#__nuxt > div > div.app-wrapper__content > div > div > h1"
+            ).text
+        return (txt)
+    
+    def cart_page__clear_cart_title(self):
+        """
+           Очистить корзину
+        """
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, "#__nuxt > div > div.app-wrapper__content > div > div > div > div.cart-page__head > div > div.cart-page__delete-many > span")
+                )
+            ).click()
+
+    def chg_app_button__content(self):
+        """
+           Восстановить корзину
+        """
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, "#__nuxt > div > div.app-wrapper__content > div > div > div > section > div > button.chg-app-button.chg-app-button--primary.chg-app-button--s.chg-app-button--brand-blue.cart-multiple-delete__button.cart-multiple-delete__button > div")
+                )
+            ).click()
