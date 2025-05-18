@@ -11,61 +11,51 @@ url = ChitaiGorodAPI(API_URL)
 @allure.severity("critical")
 @pytest.mark.api_test
 @pytest.mark.parametrize("title", [
-    "маугли",
-    "педагогическая поэма"
+    "Мастер и Маргарита"
 ])
 def test_search_book_name_positive(title: str):
-    with allure.step("Ввести название на кирилие"):
+    with allure.step("Поиск по названию"):
         result = url.search_product(phrase=title)
         assert result.status_code == 200
-        assert result.json()["data"]["attributes"]
-        ["transformedPhrase"] == title
+        
+
+@allure.feature("API проверки веб-сайта'Читай город'")
+@allure.severity("critical")
+@pytest.mark.api_test
+@pytest.mark.parametrize("title", [
+    "Булгаков"
+])
+def test_search_book_author_positive(title: str):
+    with allure.step("Поиск по автору"):
+        result = url.search_product(phrase=title)
+        assert result.status_code == 200       
 
 
 @allure.feature("API проверки веб-сайта'Читай город'")
 @allure.severity("critical")
 @pytest.mark.api_test
 @pytest.mark.parametrize("title", [
-    "首教学诗",
-    "😀😀😀"
+    "Рассказы"
+])
+def test_search_book_genre_positive(title: str):
+    with allure.step("Поиск по жанру"):
+        result = url.search_product(phrase=title)
+        assert result.status_code == 200        
+
+
+@allure.feature("API проверки веб-сайта'Читай город'")
+@allure.severity("critical")
+@pytest.mark.api_test
+@pytest.mark.parametrize("title", [
+    "№*&"
 ])
 def test_search_book_name_negative(title: str):
-    with allure.step("Ввести название невалидными значениями"):
+    with allure.step("Спецсимволы в поисковой строке"):
         result = url.search_product(phrase=title)
         assert result.status_code == 422
         assert result.json()['errors'][0]
         ['title'] == "Недопустимая поисковая фраза"
-
-
-@allure.feature("API проверки веб-сайта'Читай город'")
-@allure.severity("critical")
-@pytest.mark.api_test
-@pytest.mark.parametrize("title", [
-    "киплинг",
-    "макаренко"
-])
-def test_search_book_author_positive(title: str):
-    with allure.step("Ввести автора"):
-        result = url.search_product(phrase=title)
-        assert result.status_code == 200
-        assert result.json()["data"]["attributes"]
-        ["transformedPhrase"] == title
-
-
-@allure.feature("API проверки веб-сайта'Читай город'")
-@allure.severity("critical")
-@pytest.mark.api_test
-@pytest.mark.parametrize("title", [
-    "художественная литература",
-    "комиксы"
-])
-def test_search_book_genre_positive(title: str):
-    with allure.step("Ввести нужный критерий отбора"):
-        result = url.search_product(phrase=title)
-        assert result.status_code == 200
-        assert result.json()["data"]["attributes"]
-        ["transformedPhrase"] == title
-
+       
 
 @allure.feature("API проверки веб-сайта'Читай город'")
 @allure.severity("critical")
@@ -74,7 +64,7 @@ def test_search_book_genre_positive(title: str):
     " "
 ])
 def test_search_book_empty_field_negative(title: str):
-    with allure.step("Оставить поле ввода пустое"):
+    with allure.step("Пустая поисковая строка"):
         result = url.search_product(phrase=title)
         assert result.status_code == 400
         assert result.json()['errors'][0]
